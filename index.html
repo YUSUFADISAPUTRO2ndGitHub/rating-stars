@@ -14,11 +14,11 @@
 
         .group-of-stars li {
             float: left;
-            padding-left: 5px;
-            padding-right: 5px;
+            padding-left: 15px;
+            padding-right: 15px;
         }
         .a-star{
-            width: 100px;
+            width: 20px;
         }
     </style>
 </head>
@@ -43,7 +43,10 @@
 </body>
 <script>
     $( document ).ready(function() {
-        getProductsWithProductNo("6900005030114").done(function (response) {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const product_code = urlParams.get('product_code');
+        getProductsWithProductNo(product_code).done(function (response) {
                 console.log(response.product_rating);
                 if(response.product_rating == 25){
                     $("#a-star-1").attr("src", "./star.png");
@@ -69,20 +72,29 @@
     });
 
     function refresh_stars(){
-        getProductsWithProductNo("6900005030114").done(function (response) {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const product_code = urlParams.get('product_code');
+        getProductsWithProductNo(product_code).done(function (response) {
                 console.log(response.product_rating);
                 if(response.product_rating == 25){
                     $("#a-star-1").attr("src", "./star.png");
                     $("#a-star-2").attr("src", "./star.png");
+                    $("#a-star-3").attr("src", "./star_empty.png");
+                    $("#a-star-4").attr("src", "./star_empty.png");
+                    $("#a-star-5").attr("src", "./star_empty.png");
                 }else if(response.product_rating == 50){
                     $("#a-star-1").attr("src", "./star.png");
                     $("#a-star-2").attr("src", "./star.png");
                     $("#a-star-3").attr("src", "./star.png");
+                    $("#a-star-4").attr("src", "./star_empty.png");
+                    $("#a-star-5").attr("src", "./star_empty.png");
                 }else if(response.product_rating == 75){
                     $("#a-star-1").attr("src", "./star.png");
                     $("#a-star-2").attr("src", "./star.png");
                     $("#a-star-3").attr("src", "./star.png");
                     $("#a-star-4").attr("src", "./star.png");
+                    $("#a-star-5").attr("src", "./star_empty.png");
                 }else if(response.product_rating == 100){
                     $("#a-star-1").attr("src", "./star.png");
                     $("#a-star-2").attr("src", "./star.png");
@@ -112,38 +124,44 @@
     }
     $( ".a-star" ).click(function() {
         console.log(this.id)
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const product_code = urlParams.get('product_code');
         if(this.id == 'a-star-1'){
-            setproductrating('6900005030114', '0').done(function (response) {
+            setproductrating(product_code, '0').done(function (response) {
+                refresh_stars();
             });
         }else if(this.id == 'a-star-2'){
-            setproductrating('6900005030114', '25').done(function (response) {
+            setproductrating(product_code, '25').done(function (response) {
+                refresh_stars();
             });
         }else if(this.id == 'a-star-3'){
-            setproductrating('6900005030114', '50').done(function (response) {
+            setproductrating(product_code, '50').done(function (response) {
+                refresh_stars();
             });
         }else if(this.id == 'a-star-4'){
-            setproductrating('6900005030114', '75').done(function (response) {
+            setproductrating(product_code, '75').done(function (response) {
+                refresh_stars();
             });
         }else if(this.id == 'a-star-5'){
-            setproductrating('6900005030114', '100').done(function (response) {
+            setproductrating(product_code, '100').done(function (response) {
+                refresh_stars();
             });
         }
-        refresh_stars();
     });
 
     $( "#a-star-1" ).mouseenter(function() {
         $("#a-star-1").attr("src", "./star_empty.png");
     });
     $( "#a-star-1" ).mouseleave(function() {
-        $("#a-star-1").attr("src", "./star.png");
+        refresh_stars();
     });
     $( "#a-star-2" ).mouseenter(function() {
         $("#a-star-1").attr("src", "./star_empty.png");
         $("#a-star-2").attr("src", "./star_empty.png");
     });
     $( "#a-star-2" ).mouseleave(function() {
-        $("#a-star-1").attr("src", "./star.png");
-        $("#a-star-2").attr("src", "./star.png");
+        refresh_stars();
     });
     $( "#a-star-3" ).mouseenter(function() {
         $("#a-star-1").attr("src", "./star_empty.png");
@@ -151,9 +169,7 @@
         $("#a-star-3").attr("src", "./star_empty.png");
     });
     $( "#a-star-3" ).mouseleave(function() {
-        $("#a-star-1").attr("src", "./star.png");
-        $("#a-star-2").attr("src", "./star.png");
-        $("#a-star-3").attr("src", "./star.png");
+        refresh_stars();
     });
     $( "#a-star-4" ).mouseenter(function() {
         $("#a-star-1").attr("src", "./star_empty.png");
@@ -162,10 +178,7 @@
         $("#a-star-4").attr("src", "./star_empty.png");
     });
     $( "#a-star-4" ).mouseleave(function() {
-        $("#a-star-1").attr("src", "./star.png");
-        $("#a-star-2").attr("src", "./star.png");
-        $("#a-star-3").attr("src", "./star.png");
-        $("#a-star-4").attr("src", "./star.png");
+        refresh_stars();
     });
     $( "#a-star-5" ).mouseenter(function() {
         $("#a-star-1").attr("src", "./star_empty.png");
@@ -175,11 +188,7 @@
         $("#a-star-5").attr("src", "./star_empty.png");
     });
     $( "#a-star-5" ).mouseleave(function() {
-        $("#a-star-1").attr("src", "./star.png");
-        $("#a-star-2").attr("src", "./star.png");
-        $("#a-star-3").attr("src", "./star.png");
-        $("#a-star-4").attr("src", "./star.png");
-        $("#a-star-5").attr("src", "./star.png");
+        refresh_stars();
     });
     
 </script>
